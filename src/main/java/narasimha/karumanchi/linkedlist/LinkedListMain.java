@@ -29,12 +29,12 @@ public class LinkedListMain {
 		// linkedListMain.runSplitCircularList();
 		// linkedListMain.runIsPalindromeList();
 		// linkedListMain.runReverseKNodesInList();
-		// linkedListMain.runJosepheusCircleNode();
+		linkedListMain.runJosepheusCircleNode();
 		// System.out.println(josephus(7, 2));
 		// linkedListMain.runClone();
 		// linkedListMain.runRotate();
 		// linkedListMain.runAddNumbers();
-		linkedListMain.runPartition();
+		// linkedListMain.runPartition();
 		// linkedListMain.runRemoveDuplicates();
 		// linkedListMain.runCommonElements();
 	}
@@ -242,9 +242,10 @@ public class LinkedListMain {
 
 	// 17. Josepheus circle
 	public void runJosepheusCircleNode() {
-		final ListNode head = LinkedListUtilities.createCircularList();
-		final ListNode newHead = findJosepheusCircleNode(head, 2);
-		newHead.printLinkedList();
+		// final ListNode head = LinkedListUtilities.createCircularList();
+		// final ListNode newHead = findJosepheusCircleNode(head, 2);
+		// newHead.printLinkedList();
+		System.out.println(josephus(3, 2));
 	}
 
 	// 18. Clone linked list with random pointers
