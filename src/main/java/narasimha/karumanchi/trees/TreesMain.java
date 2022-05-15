@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.Stack;
+import java.util.TreeMap;
 
 public class TreesMain {
 	public static void main(String[] args) throws Exception {
@@ -48,7 +49,13 @@ public class TreesMain {
 		// treesMain.runBuildFromPreAndInOrder();
 		// treesMain.runBuildFromPostAndInOrder();
 		// treesMain.runBuildFromPreAndPostOrder();
-		treesMain.runFindAncestors();
+		// treesMain.runFindAncestors();
+		// treesMain.runLCA();
+		// treesMain.runZigZagTraversal();
+		// treesMain.runVerticalOrderTraversal();
+		// treesMain.runNumberOfBinaryTreesWithNNodes();
+		// treesMain.runGenerateAllBinarySearchTrees();
+		treesMain.runConstructTreeFromPreOrderString();
 	}
 
 	// ....Trees Runners....
@@ -289,6 +296,48 @@ public class TreesMain {
 		final TreeNode root = TreeUtils.createBinaryTree();
 		final TreeNode node = find(root, 3);
 		System.out.println(findAncestors(root, node));
+	}
+
+	// 34. Find LCA
+	public void runLCA() {
+		final TreeNode root = TreeUtils.createBinaryTree();
+		final TreeNode node1 = find(root, 2);
+		final TreeNode node2 = find(root, 3);
+		System.out.println(LCA(root, node1, node2).getData());
+	}
+
+	// 35. zigzag traversal
+	public void runZigZagTraversal() {
+		final TreeNode root = TreeUtils.createBinaryTree3();
+		System.out.println(zigZagTraversal(root));
+	}
+
+	// 36. Vertical Order Traversal
+	public void runVerticalOrderTraversal() {
+		final TreeNode root = TreeUtils.createBinaryTree3();
+		System.out.println(verticalOrderTraversal(root));
+	}
+
+	// 37. Number of binary trees
+	public void runNumberOfBinaryTreesWithNNodes() {
+		System.out.println(numberOfBinaryTreesWithNNodes(4));
+	}
+
+	// 38. Generate all binary search trees from n numbers
+	public void runGenerateAllBinarySearchTrees() {
+		final List<TreeNode> trees = generateAllBinarySearchTrees(5);
+		for (final TreeNode root : trees) {
+			System.out.println(printHorizontalTree(root));
+			System.out.println(preOrderTraversal(root));
+			System.out.println();
+		}
+	}
+
+	// 39. Run construct tree from preorder string
+	public void runConstructTreeFromPreOrderString() {
+		final String preOrderString = "ILILL";
+		final TreeNode root = constructTreeFromPreOrderString(preOrderString);
+		System.out.println(printHorizontalTree(root));
 	}
 
 	// ....Algorithms....
@@ -612,10 +661,7 @@ public class TreesMain {
 		}
 		final TreeNode left = find(root.getLeft(), k);
 		final TreeNode right = find(root.getRight(), k);
-		if (left != null) {
-			return left;
-		}
-		return right;
+		return left != null ? left : right;
 	}
 
 	// 12. *Find in binary tree Iterative*
@@ -929,7 +975,7 @@ public class TreesMain {
 		return 1 + Math.max(lh, rh);
 	}
 
-	// 29. *Find the level that has maximum sum in the tree*
+	// 30. *Find the level that has maximum sum in the tree*
 	public int levelWithMaxSum(TreeNode root) {
 		if (root == null) {
 			return -1;
@@ -964,7 +1010,7 @@ public class TreesMain {
 		return maxSumLevel;
 	}
 
-	// 30. *Find all paths in the tree from root to leaf*
+	// 31. *Find all paths in the tree from root to leaf*
 	public List<String> findAllPaths(TreeNode root) {
 		if (root == null) {
 			return null;
@@ -989,7 +1035,7 @@ public class TreesMain {
 		}
 	}
 
-	// 31. *Find if a path exists from root to leaf with given sum*
+	// 32. *Find if a path exists from root to leaf with given sum*
 	public boolean hasPathSum(TreeNode root, int k) {
 		if (root == null) {
 			return false;
@@ -1000,7 +1046,7 @@ public class TreesMain {
 		return hasPathSum(root.getLeft(), k - root.getData()) || hasPathSum(root.getRight(), k - root.getData());
 	}
 
-	// 32. *Find sum of all nodes in a binary tree*
+	// 33. *Find sum of all nodes in a binary tree*
 	public int sumOfAllNodes(TreeNode root) {
 		if (root == null) {
 			return 0;
@@ -1008,7 +1054,7 @@ public class TreesMain {
 		return root.getData() + sumOfAllNodes(root.getLeft()) + sumOfAllNodes(root.getRight());
 	}
 
-	// 33. *Mirror of tree*
+	// 34. *Mirror of tree*
 	public void mirror(TreeNode root) {
 		if (root == null || (root.getLeft() == null && root.getRight() == null)) {
 			return;
@@ -1020,7 +1066,7 @@ public class TreesMain {
 		root.setRight(left);
 	}
 
-	// 34. *Is Mirror*
+	// 35. *Is Mirror*
 	public boolean isMirror(TreeNode root1, TreeNode root2) {
 		if (root1 == null && root2 == null) {
 			return true;
@@ -1031,7 +1077,7 @@ public class TreesMain {
 		return isMirror(root1.getLeft(), root2.getRight()) && isMirror(root1.getRight(), root2.getLeft());
 	}
 
-	// 35. *Build tree from preorder and inorder arrays*
+	// 36. *Build tree from preorder and inorder arrays*
 	public TreeNode buildFromPreAndInorder(int[] preOrder, int[] inOrder) {
 		if (preOrder.length != inOrder.length) {
 			return null;
@@ -1067,7 +1113,7 @@ public class TreesMain {
 		return root;
 	}
 
-	// 36. *Build tree from post order and inorder*
+	// 37. *Build tree from post order and inorder*
 	public TreeNode buildFromPostAndInOrder(int[] postOrder, int[] inOrder) {
 		if (postOrder.length != inOrder.length) {
 			return null;
@@ -1103,7 +1149,7 @@ public class TreesMain {
 		return root;
 	}
 
-	// 36. *Build tree from pre order and post order*
+	// 37. *Build tree from pre order and post order*
 	public TreeNode buildFromPreAndPostOrder(int[] preOrder, int[] postOrder) {
 		if (preOrder.length != postOrder.length) {
 			return null;
@@ -1132,7 +1178,7 @@ public class TreesMain {
 		return root;
 	}
 
-	// 37. *Find all ancestors for a given tree node*
+	// 38. *Find all ancestors for a given tree node*
 	public List<Integer> findAncestors(TreeNode root, TreeNode node) {
 		if (root == null) {
 			return null;
@@ -1157,6 +1203,210 @@ public class TreesMain {
 		}
 		return false;
 	}
+
+	// 39. *Find Least common ancestor*
+	public TreeNode LCA(TreeNode root, TreeNode node1, TreeNode node2) {
+		if (root == null) {
+			return null;
+		}
+		if (root == node1 || root == node2) {
+			return root;
+		}
+		final TreeNode left = LCA(root.getLeft(), node1, node2);
+		final TreeNode right = LCA(root.getRight(), node1, node2);
+
+		if (left != null && right != null) {
+			return root;
+		}
+		return left != null ? left : right;
+	}
+
+	// 40. *zigzag traversal*
+	public List<Integer> zigZagTraversal(TreeNode root) {
+		if (root == null) {
+			return null;
+		}
+		final List<Integer> result = new LinkedList<>();
+
+		final Queue<TreeNode> queue = new LinkedList<>();
+		queue.offer(root);
+		var height = 0;
+		int previousResultSize = 0;
+		while (!queue.isEmpty()) {
+			final int level = queue.size();
+			for (var i = 0; i < level; i++) {
+				final TreeNode node = queue.poll();
+				if (height % 2 != 0) {
+					result.add(previousResultSize, node.getData());
+				} else {
+					result.add(node.getData());
+				}
+				if (node.getLeft() != null) {
+					queue.offer(node.getLeft());
+				}
+				if (node.getRight() != null) {
+					queue.offer(node.getRight());
+				}
+			}
+			previousResultSize = result.size();
+			height++;
+		}
+		return result;
+	}
+
+	// 41. *Vertical order traversal*
+	public List<List<Integer>> verticalOrderTraversal(TreeNode root) {
+		if (root == null) {
+			return null;
+		}
+		final Map<Integer, List<Integer>> map = new TreeMap<>();
+		verticalOrderTraversal(root, 0, map);
+		final List<List<Integer>> result = new ArrayList<>();
+		for (final int column : map.keySet()) {
+			result.add(map.get(column));
+		}
+		return result;
+	}
+
+	private void verticalOrderTraversal(TreeNode root, int column, Map<Integer, List<Integer>> map) {
+		if (root == null) {
+			return;
+		}
+		verticalOrderTraversal(root.getLeft(), column - 1, map);
+		verticalOrderTraversal(root.getRight(), column + 1, map);
+		if (!map.containsKey(column)) {
+			final List<Integer> list = new ArrayList<>();
+			list.add(root.getData());
+			map.put(column, list);
+		} else {
+			final List<Integer> nodesInAColumn = map.get(column);
+			nodesInAColumn.add(root.getData());
+			map.put(column, nodesInAColumn);
+		}
+	}
+
+	// 42. *Number of binary trees with n nodes*
+	public int numberOfBinaryTreesWithNNodes(int n) {
+		return (1 << n) - n; // 2^n - n
+	}
+
+	// 43. *Generate all binary search trees with n nodes*
+	public List<TreeNode> generateAllBinarySearchTrees(int n) {
+		if (n == 0) {
+			return generateAllBinarySearchTrees(1, 0);
+		}
+		return generateAllBinarySearchTrees(1, n);
+	}
+
+	public List<TreeNode> generateAllBinarySearchTrees(int start, int end) {
+		final List<TreeNode> trees = new ArrayList<>();
+		if (start > end) {
+			trees.add(null);
+			return trees;
+		}
+		for (int i = start; i <= end; i++) {
+			// for every node i from 1..n as root, generate their left subtree
+			// from 1..i and right subtree from i..n for every 1<=i<=n as we are
+			// constructing a BST
+			for (final TreeNode left : generateAllBinarySearchTrees(start, i - 1)) {
+				for (final TreeNode right : generateAllBinarySearchTrees(i + 1, end)) {
+					final TreeNode root = new TreeNode(i);
+					root.setLeft(left);
+					root.setRight(right);
+					trees.add(root);
+				}
+			}
+		}
+		return trees;
+	}
+
+	// 44. *Print horizonral tree structure*
+	// https://www.baeldung.com/java-print-binary-tree-diagram
+	public String printHorizontalTree(TreeNode root) {
+		if (root == null) {
+			return "";
+		}
+		final StringBuilder sb = new StringBuilder();
+		sb.append(root.getData());
+
+		final boolean hasRightSibling = root.getRight() != null;
+		final var rightPointer = "└──";
+		final var leftPointer = hasRightSibling ? "├──" : "└──";
+		printHorizontalTree(root.getLeft(), sb, "", leftPointer, hasRightSibling);
+		printHorizontalTree(root.getRight(), sb, "", rightPointer, false);
+		return sb.toString();
+	}
+
+	private void printHorizontalTree(TreeNode root, StringBuilder sb, String padding, String pointer,
+			boolean hasRightSibling) {
+		if (root == null) {
+			return;
+		}
+		sb.append("\n").append(padding).append(pointer).append(root.getData());
+		final var paddingBuilder = new StringBuilder(padding);
+		if (hasRightSibling) {
+			paddingBuilder.append("│  ");
+		} else {
+			paddingBuilder.append("  ");
+		}
+		final var paddingForBoth = paddingBuilder.toString();
+
+		final var rightPointer = "└──";
+		final var leftPointer = root.getRight() != null ? "├──" : "└──";
+
+		printHorizontalTree(root.getLeft(), sb, paddingForBoth, leftPointer, hasRightSibling);
+		printHorizontalTree(root.getRight(), sb, paddingForBoth, rightPointer, false);
+	}
+
+	// 45. *Let's assume the tree has only 0 or 2 children. Given a pre-order
+	// string "ILILL" where I = intermediate node, L = Leaf node, construct the
+	// tree*
+	public TreeNode constructTreeFromPreOrderString(String preOrderSequence) {
+		if (preOrderSequence == null) {
+			return null;
+		}
+		return constructTreeFromPreOrderString(preOrderSequence.toCharArray(), 0);
+	}
+
+	private TreeNode constructTreeFromPreOrderString(char[] arr, int index) {
+		if (arr == null) {
+			return null;
+		}
+		if (arr.length == index) {
+			return null;
+		}
+		final TreeNode root = new TreeNode(arr[index]);
+		if (arr[index] == 'L') {
+			return null;
+		}
+		root.setLeft(constructTreeFromPreOrderString(arr, ++index));
+		root.setRight(constructTreeFromPreOrderString(arr, ++index));
+		return root;
+	}
+
+	// 46. *Given a SiblingBinaryTree with default nextSibling pointers pointing
+	// to null, populate them*
+	public SiblingTreeNode populateNextSiblingNodes(SiblingTreeNode root) {
+		if (root == null) {
+			return null;
+		}
+		final Queue<SiblingTreeNode> queue = new LinkedList<>();
+		queue.offer(root);
+		while (!queue.isEmpty()) {
+			final int level = queue.size();
+			for (var i = 0; i < level; i++) {
+				final SiblingTreeNode node = queue.poll();
+				node.setNextSibling(queue.peek());
+				if (node.getLeft() != null) {
+					queue.offer(node.getLeft());
+				}
+				if (node.getRight() != null) {
+					queue.offer(node.getRight());
+				}
+			}
+		}
+		return root;
+	}
 }
 
 class TreeUtils {
@@ -1178,6 +1428,44 @@ class TreeUtils {
 		final var left = new TreeNode(4, new TreeNode(6), new TreeNode(5));
 		final var right = new TreeNode(1, new TreeNode(3), new TreeNode(2));
 		final var root = new TreeNode(0, left, right); // NOSONAR
+		return root;
+	}
+
+	public static TreeNode createBinaryTree3() {
+		final var leaf1 = new TreeNode(4);
+		final var leaf2 = new TreeNode(5);
+		final var rootLeftLeft = new TreeNode(2, leaf1, leaf2);
+
+		final var leaf3 = new TreeNode(6);
+		final var leaf4 = new TreeNode(7);
+		final var rootLeftRight = new TreeNode(3, leaf3, leaf4);
+
+		final var rootLeft = new TreeNode(1, rootLeftLeft, rootLeftRight);
+
+		final var leaf5 = new TreeNode(9);
+		final var leaf6 = new TreeNode(10);
+		final var rootRight = new TreeNode(8, leaf5, leaf6);
+
+		final var root = new TreeNode(0, rootLeft, rootRight); // NOSONAR
+		return root;
+	}
+
+	public static SiblingTreeNode createNextSiblingNodeBinaryTree() {
+		final var leaf1 = new SiblingTreeNode(4);
+		final var leaf2 = new SiblingTreeNode(5);
+		final var rootLeftLeft = new SiblingTreeNode(2, leaf1, leaf2);
+
+		final var leaf3 = new SiblingTreeNode(6);
+		final var leaf4 = new SiblingTreeNode(7);
+		final var rootLeftRight = new SiblingTreeNode(3, leaf3, leaf4);
+
+		final var rootLeft = new SiblingTreeNode(1, rootLeftLeft, rootLeftRight);
+
+		final var leaf5 = new SiblingTreeNode(9);
+		final var leaf6 = new SiblingTreeNode(10);
+		final var rootRight = new SiblingTreeNode(8, leaf5, leaf6);
+
+		final var root = new SiblingTreeNode(0, rootLeft, rootRight); // NOSONAR
 		return root;
 	}
 }
@@ -1221,5 +1509,61 @@ class TreeNode {
 
 	public void setRight(TreeNode right) {
 		this.right = right;
+	}
+}
+
+class SiblingTreeNode {
+	int data;
+	SiblingTreeNode left;
+	SiblingTreeNode right;
+	SiblingTreeNode nextSibling;
+
+	public SiblingTreeNode(int data) {
+		this.data = data;
+		this.left = null;
+		this.right = null;
+	}
+
+	public SiblingTreeNode(int data, SiblingTreeNode left, SiblingTreeNode right) {
+		this.data = data;
+		this.left = left;
+		this.right = right;
+	}
+
+	public SiblingTreeNode(int data, SiblingTreeNode left, SiblingTreeNode right, SiblingTreeNode nextSibling) {
+		this(data, left, right);
+		this.nextSibling = nextSibling;
+	}
+
+	public int getData() {
+		return data;
+	}
+
+	public void setData(int data) {
+		this.data = data;
+	}
+
+	public SiblingTreeNode getLeft() {
+		return left;
+	}
+
+	public void setLeft(SiblingTreeNode left) {
+		this.left = left;
+	}
+
+	public SiblingTreeNode getRight() {
+		return right;
+	}
+
+	public void setRight(SiblingTreeNode right) {
+		this.right = right;
+	}
+
+	public SiblingTreeNode getNextSibling() {
+		return nextSibling;
+	}
+
+	public void setNextSibling(SiblingTreeNode nextSibling) {
+		this.nextSibling = nextSibling;
 	}
 }
