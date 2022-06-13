@@ -36,7 +36,7 @@ public class TreesMain {
 		// treesMain.runHeight();
 		// treesMain.runHeightWithStack();
 		// treesMain.runHeightWithLevelOrder();
-		// treesMain.runMinDepth();
+		treesMain.runMinDepth();
 		// treesMain.runMinDepthIterative();
 		// treesMain.runIsStructurallyIdentical();
 		// treesMain.runMaxDiameterInTree();
@@ -53,9 +53,9 @@ public class TreesMain {
 		// treesMain.runLCA();
 		// treesMain.runZigZagTraversal();
 		// treesMain.runVerticalOrderTraversal();
-		// treesMain.runNumberOfBinaryTreesWithNNodes();
+		treesMain.runNumberOfBinaryTreesWithNNodes();
 		// treesMain.runGenerateAllBinarySearchTrees();
-		treesMain.runConstructTreeFromPreOrderString();
+		// treesMain.runConstructTreeFromPreOrderString();
 	}
 
 	// ....Trees Runners....
@@ -1140,7 +1140,7 @@ public class TreesMain {
 		if (postStart > postEnd || inStart > inEnd) {
 			return null;
 		}
-		final var root = new TreeNode(postOrder[postEnd]);
+		final TreeNode root = new TreeNode(postOrder[postEnd]);
 		final int indexOfRootInInOrder = map.get(root.getData());
 		root.setLeft(buildFromPostAndInOrder(postStart, postStart + indexOfRootInInOrder - inStart - 1, inStart,
 				indexOfRootInInOrder - 1, postOrder, map));
