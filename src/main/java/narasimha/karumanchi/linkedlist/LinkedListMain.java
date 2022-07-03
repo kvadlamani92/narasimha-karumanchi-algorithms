@@ -1,8 +1,12 @@
 package narasimha.karumanchi.linkedlist;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.PriorityQueue;
+import java.util.Queue;
 import java.util.Set;
 
 public class LinkedListMain {
@@ -29,7 +33,7 @@ public class LinkedListMain {
 		// linkedListMain.runSplitCircularList();
 		// linkedListMain.runIsPalindromeList();
 		// linkedListMain.runReverseKNodesInList();
-		linkedListMain.runJosepheusCircleNode();
+		// linkedListMain.runJosepheusCircleNode();
 		// System.out.println(josephus(7, 2));
 		// linkedListMain.runClone();
 		// linkedListMain.runRotate();
@@ -37,6 +41,7 @@ public class LinkedListMain {
 		// linkedListMain.runPartition();
 		// linkedListMain.runRemoveDuplicates();
 		// linkedListMain.runCommonElements();
+		linkedListMain.runMergeKLists();
 	}
 
 	// ....LinkedListADT Runners....
@@ -297,6 +302,17 @@ public class LinkedListMain {
 		final ListNode head1 = LinkedListUtilities.createLinkedListNumber1();
 		final ListNode head2 = LinkedListUtilities.createLinkedListNumber2();
 		final ListNode finalHead = commonElements(head1, head2);
+		finalHead.printLinkedList();
+	}
+
+	// 25. Merge k linkedLists
+	public void runMergeKLists() {
+		final ListNode head1 = LinkedListUtilities.createLinkedListNumber1();
+		final ListNode head2 = LinkedListUtilities.createLinkedListNumber2();
+		final List<ListNode> listOfLists = new ArrayList<>();
+		listOfLists.add(head1);
+		listOfLists.add(head2);
+		final ListNode finalHead = mergeKLists(listOfLists);
 		finalHead.printLinkedList();
 	}
 
@@ -893,6 +909,25 @@ public class LinkedListMain {
 				head1 = head1.getNext();
 			} else {
 				head2 = head2.getNext();
+			}
+		}
+		return sentinel.getNext();
+	}
+
+	// 26. Merge k sorted linked lists
+	public ListNode mergeKLists(List<ListNode> listOfLinkedLists) {
+		final ListNode sentinel = new ListNode(-1);
+		final Queue<ListNode> minHeap = new PriorityQueue<ListNode>();
+		for (final ListNode linkedListHead : listOfLinkedLists) {
+			minHeap.add(linkedListHead);
+		}
+		ListNode sentinelTemp = sentinel;
+		while (!minHeap.isEmpty()) {
+			final ListNode currentNode = minHeap.poll();
+			sentinelTemp.setNext(currentNode);
+			sentinelTemp = sentinelTemp.getNext();
+			if (currentNode.getNext() != null) {
+				minHeap.add(currentNode.getNext());
 			}
 		}
 		return sentinel.getNext();

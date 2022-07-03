@@ -17,7 +17,10 @@ public class BinarySearchTreesMain {
 		// binarySearchTreesMain.runBSTToDLL();
 		// binarySearchTreesMain.runDLLToBST();
 		// binarySearchTreesMain.runArrayToBST();
-		binarySearchTreesMain.runKthSmallest();
+		// binarySearchTreesMain.runKthSmallest();
+		// binarySearchTreesMain.runFindStep();
+		// binarySearchTreesMain.runFindCeil();
+		binarySearchTreesMain.runFindElementsBetween();
 	}
 
 	// ...Binary Search Trees Runners...
@@ -97,6 +100,24 @@ public class BinarySearchTreesMain {
 
 		System.out.println(findKthSmallestElement(root, 7).getData());
 
+	}
+
+	// 12. Find step of a BST
+	public void runFindStep() {
+		final BinarySearchTreeNode root = BinarySearchTreeUtils.createBinarySearchTree();
+		System.out.println(findStep(root, 1));
+	}
+
+	// 13. Find ceil of a BST
+	public void runFindCeil() {
+		final BinarySearchTreeNode root = BinarySearchTreeUtils.createBinarySearchTree();
+		System.out.println(findCeil(root, 4));
+	}
+
+	// 14. Find elements between k1 and k2
+	public void runFindElementsBetween() {
+		final BinarySearchTreeNode root = BinarySearchTreeUtils.createBinarySearchTree();
+		findElementsBetween(root, 2, 8);
 	}
 
 	// ...Algorithms...
@@ -360,6 +381,72 @@ public class BinarySearchTreesMain {
 		// return root;
 		// }
 		// return findKthSmallestElement(root.right, k, count);
+	}
+
+	// 12. Find step of a number in BST
+	public int findStep(BinarySearchTreeNode root, int k) {
+		if (root == null) {
+			return -1;
+		}
+		final var step = new int[1];
+		step[0] = -1;
+		return findStep(root, k, step);
+	}
+
+	private int findStep(BinarySearchTreeNode root, int k, int[] step) {
+		if (root == null) {
+			return step[0];
+		}
+		if (root.getData() == k) {
+			return root.getData();
+		}
+		if (k > root.getData()) {
+			step[0] = root.getData();
+			return findStep(root.getRight(), k, step);
+		}
+		return findStep(root.getLeft(), k, step);
+	}
+
+	// 13. Find ceiling of a number in BST
+	public int findCeil(BinarySearchTreeNode root, int k) {
+		if (root == null) {
+			return -1;
+		}
+		final var ceil = new int[1];
+		ceil[0] = -1;
+		return findCeil(root, k, ceil);
+	}
+
+	private int findCeil(BinarySearchTreeNode root, int k, int[] ceil) {
+		if (root == null) {
+			return ceil[0];
+		}
+		if (root.getData() == k) {
+			return root.getData();
+		}
+		if (k < root.getData()) {
+			ceil[0] = root.getData();
+			return findCeil(root.getLeft(), k, ceil);
+		}
+		return findCeil(root.getRight(), k, ceil);
+	}
+
+	// 14. Given 2 BSTs, do their UNION
+	// Sol: Convert 2 BSTs into inorder sorted DLLs, merge them and create BST
+	// out of merged sorted DLL
+
+	// 15. Given a BST and 2 numbers k1 and k2, print all the elements in the
+	// BST between k1 and k2
+	// Alternative: We can use level order traversal as well
+	public void findElementsBetween(BinarySearchTreeNode root, int k1, int k2) {
+		if (root == null) {
+			return;
+		}
+		findElementsBetween(root.getLeft(), k1, k2);
+		if (k1 <= root.getData() && root.getData() <= k2) {
+			System.out.println(root.getData());
+		}
+		findElementsBetween(root.getRight(), k1, k2);
 	}
 
 	// 44. *Print horizonral tree structure*

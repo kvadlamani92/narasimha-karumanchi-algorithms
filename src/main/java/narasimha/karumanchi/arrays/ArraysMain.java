@@ -6,6 +6,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Deque;
 import java.util.List;
+import java.util.PriorityQueue;
+import java.util.Queue;
 
 public class ArraysMain {
 	public static void main(String[] args) {
@@ -13,7 +15,8 @@ public class ArraysMain {
 		// arraysMain.runRemoveAdjacentDuplicatesRecursively();
 		// arraysMain.runMaxSumInSlidingWindow();
 		// arraysMain.runIntersectionOfPairs();
-		arraysMain.runIntersectionOfPairLists();
+		// arraysMain.runIntersectionOfPairLists();
+		arraysMain.runMergeKSortedArrays();
 	}
 
 	// ....Arrays Runners....
@@ -47,6 +50,13 @@ public class ArraysMain {
 		final List<Pair<Integer, Integer>> pairs2 = ArrayUtils.getListOfPairs5();
 		final List<Pair<Integer, Integer>> result = getIntersectionOfPairLists(pairs1, pairs2);
 		System.out.println(result);
+	}
+
+	// 5. Run merge k sorted arrays
+	public void runMergeKSortedArrays() {
+		final int[][] arrayOfArrays = { { 2, 4, 6, 8, 10 }, { 1, 3, 5, 7, 9 }, { 5, 5, 5 } };
+		final int[] result = mergeKSortedArrays(arrayOfArrays);
+		System.out.println(Arrays.toString(result));
 	}
 
 	// ....Algorithms....
@@ -160,6 +170,74 @@ public class ArraysMain {
 		}
 		return result;
 	}
+
+	// 5. Merge k sorted arrays
+	public int[] mergeKSortedArrays(int[][] arrayOfArrays) {
+		final int n = arrayOfArrays.length;
+		final int m = arrayOfArrays[0].length;
+		final var result = new int[n * m];
+		final Queue<ArrayIndexWithValueIndex> minHeap = new PriorityQueue<>();
+		for (var i = 0; i < n; i++) {
+			minHeap.add(new ArrayIndexWithValueIndex(i, 0, arrayOfArrays[i][0]));
+		}
+		var j = 0;
+		while (!minHeap.isEmpty()) {
+			final ArrayIndexWithValueIndex indexWithValue = minHeap.poll();
+			result[j++] = indexWithValue.getValue();
+			final var arrayIndex = indexWithValue.getArrayIndex();
+			final var nextValueIndex = indexWithValue.getValueIndex() + 1;
+			final var arrayLength = arrayOfArrays[arrayIndex].length;
+			if (nextValueIndex < arrayLength) {
+				final var nextValue = arrayOfArrays[arrayIndex][nextValueIndex];
+				minHeap.add(new ArrayIndexWithValueIndex(arrayIndex, nextValueIndex, nextValue));
+			}
+		}
+		return result;
+	}
+}
+
+class ArrayIndexWithValueIndex implements Comparable {
+	int arrayIndex;
+	int valueIndex;
+	int value;
+
+	public ArrayIndexWithValueIndex(int arrayIndex, int valueIndex, int value) {
+		super();
+		this.arrayIndex = arrayIndex;
+		this.valueIndex = valueIndex;
+		this.value = value;
+	}
+
+	public int getArrayIndex() {
+		return arrayIndex;
+	}
+
+	public void setArrayIndex(int arrayIndex) {
+		this.arrayIndex = arrayIndex;
+	}
+
+	public int getValueIndex() {
+		return valueIndex;
+	}
+
+	public void setValueIndex(int valueIndex) {
+		this.valueIndex = valueIndex;
+	}
+
+	public int getValue() {
+		return value;
+	}
+
+	public void setValue(int value) {
+		this.value = value;
+	}
+
+	@Override
+	public int compareTo(Object o) {
+		final ArrayIndexWithValueIndex other = (ArrayIndexWithValueIndex) o;
+		return this.value > other.value ? 1 : (this.value < other.value ? -1 : 0);
+	}
+
 }
 
 class ArrayUtils {

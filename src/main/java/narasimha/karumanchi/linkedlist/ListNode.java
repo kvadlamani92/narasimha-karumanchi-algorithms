@@ -1,6 +1,6 @@
 package narasimha.karumanchi.linkedlist;
 
-public class ListNode {
+public class ListNode implements Comparable {
 	private int data;
 	private ListNode next;
 
@@ -41,5 +41,11 @@ public class ListNode {
 			temp = temp.next;
 
 		}
+	}
+
+	@Override
+	public int compareTo(Object o) {
+		final ListNode other = (ListNode) o;
+		return this.data > other.getData() ? 1 : (this.data < other.getData() ? -1 : 0);
 	}
 }

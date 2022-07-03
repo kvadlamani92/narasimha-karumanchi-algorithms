@@ -123,7 +123,7 @@ public class LinkedListUtilities {
 	public static ListNode createLinkedListNumber2() {
 		final var head = new ListNode(4);
 		var listNode = head;
-		listNode.setNext(new ListNode(6));
+		listNode.setNext(new ListNode(5));
 		listNode = listNode.getNext();
 		listNode.setNext(new ListNode(7));
 		listNode = listNode.getNext();
