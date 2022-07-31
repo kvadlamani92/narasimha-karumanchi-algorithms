@@ -399,7 +399,7 @@ public class SearchingMain {
 	// Time - O(n), Space - O(1)
 	public int findMaxFrequencyElementNRange(int[] arr) {
 		final var n = arr.length;
-		final int[] countArr = new int[256];
+		final var countArr = new int[256];
 		for (var i = 0; i < n; i++) {
 			countArr[arr[i]]++;
 		}
@@ -558,7 +558,7 @@ public class SearchingMain {
 				y ^= i;
 			}
 		}
-		final int[] result = new int[2];
+		final var result = new int[2];
 		result[0] = x;
 		result[1] = y;
 		return result;
@@ -656,14 +656,14 @@ public class SearchingMain {
 	// 19. Find 3 numbers whose sum is equal to k
 	// Time - O(n^2), space - O(n)
 	public int[] findTripletSumToK(int[] arr, int k) {
-		final int n = arr.length;
-		final int[] result = new int[3];
+		final var n = arr.length;
+		final var result = new int[3];
 		final Map<Integer, Integer> map = new HashMap<>();
-		for (int i = 0; i < n; i++) {
+		for (var i = 0; i < n; i++) {
 			map.put(k - arr[i], i);
 		}
-		for (int i = 0; i < n; i++) {
-			for (int j = i + 1; j < n; j++) {
+		for (var i = 0; i < n; i++) {
+			for (var j = i + 1; j < n; j++) {
 				if (map.containsKey(arr[i] + arr[j])) {
 					result[0] = i;
 					result[1] = j;
@@ -678,8 +678,8 @@ public class SearchingMain {
 	// 20. Find sum of three numbers closest to zero
 	// Time - O(n^2), Space - O(1)
 	public int[] findSumOfThreeNumbersClosestToZero(int[] arr) {
-		final int n = arr.length;
-		final int[] result = new int[3];
+		final var n = arr.length;
+		final var result = new int[3];
 		Arrays.sort(arr);
 		var i = 0;
 		var j = 0;
@@ -881,7 +881,7 @@ public class SearchingMain {
 		return -1;
 	}
 
-	// 29. Find local minima
+	// 29. Find local maxima
 	// Time - O(logn), Space - O(1)
 	public int findLocalMaxima(int[] arr) {
 		final var n = arr.length;
@@ -1090,7 +1090,7 @@ public class SearchingMain {
 		if (n < 5) {
 			return 0;
 		}
-		int count = 0;
+		var count = 0;
 		while (n >= 1) {
 			count += n / 5;
 			n /= 5;

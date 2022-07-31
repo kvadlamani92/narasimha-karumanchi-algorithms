@@ -12,11 +12,12 @@ import java.util.Queue;
 public class ArraysMain {
 	public static void main(String[] args) {
 		final var arraysMain = new ArraysMain();
-		// arraysMain.runRemoveAdjacentDuplicatesRecursively();
+		arraysMain.runRemoveAdjacentDuplicatesRecursively();
 		// arraysMain.runMaxSumInSlidingWindow();
 		// arraysMain.runIntersectionOfPairs();
 		// arraysMain.runIntersectionOfPairLists();
-		arraysMain.runMergeKSortedArrays();
+		// arraysMain.runMergeKSortedArrays();
+		arraysMain.runSquaresOfSortedArray();
 	}
 
 	// ....Arrays Runners....
@@ -59,6 +60,12 @@ public class ArraysMain {
 		System.out.println(Arrays.toString(result));
 	}
 
+	// 6. Squares of sorted array
+	public void runSquaresOfSortedArray() {
+		final int[] arr = { -6, -4, 1, 2, 3, 5 };
+		System.out.println(Arrays.toString(squaresOfSortedArray(arr)));
+	}
+
 	// ....Algorithms....
 	// 1. Remove adjacent duplicates recursively
 	public int[] removeAdjacentDuplicatesRecursively(int[] arr) {
@@ -67,8 +74,7 @@ public class ArraysMain {
 		var pointer = -1;
 		while (i < n) {
 			if (pointer == -1 || arr[pointer] != arr[i]) {
-				pointer++;
-				arr[pointer] = arr[i];
+				arr[++pointer] = arr[i];
 				i++;
 			} else {
 				while (i < n && arr[pointer] == arr[i]) {
@@ -190,6 +196,32 @@ public class ArraysMain {
 			if (nextValueIndex < arrayLength) {
 				final var nextValue = arrayOfArrays[arrayIndex][nextValueIndex];
 				minHeap.add(new ArrayIndexWithValueIndex(arrayIndex, nextValueIndex, nextValue));
+			}
+		}
+		return result;
+	}
+
+	// 6. Squares of sorted array
+	/*
+	 * Given an array of numbers A sorted in ascending order, return an array of
+	 * the squares of each number, also in sorted ascending order. For array =
+	 * [-6, -4, 1, 2, 3, 5], the output should be [1, 4, 9, 16, 25, 36].
+	 */
+	public int[] squaresOfSortedArray(int[] arr) {
+		final var n = arr.length;
+		final var result = new int[n];
+		var i = 0;
+		var j = n - 1;
+		var k = n - 1;
+		while (i <= j) {
+			final int iSquare = arr[i] * arr[i];
+			final int jSquare = arr[j] * arr[j];
+			if (iSquare < jSquare) {
+				result[k--] = jSquare;
+				j--;
+			} else {
+				result[k--] = iSquare;
+				i++;
 			}
 		}
 		return result;
