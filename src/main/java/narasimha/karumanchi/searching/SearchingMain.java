@@ -42,7 +42,7 @@ public class SearchingMain {
 		// searchingMain.runFindRowWithMaxZeros();
 		// searchingMain.runSeparateEvenAndOddNumbers();
 		// searchingMain.runMoveZerosTillTheEnd();
-		// searchingMain.runSortArrayWith012s();
+		searchingMain.runSortArrayWith012s();
 		// searchingMain.runFindNumberOfTrailingZerosInNFactorial();
 		searchingMain.runFindPivotIndex();
 	}

@@ -205,16 +205,14 @@ public class LinkedListMain {
 		node1 = node1.getNext();
 
 		final var head2 = new ListNode(11);
-		var node2 = head2;
+		final var node2 = head2;
 		node2.setNext(new ListNode(13));
-		node2 = node2.getNext();
-		node2.setNext(new ListNode(15));
 
 		head1.printLinkedList();
 		System.out.println();
 		head2.printLinkedList();
 		System.out.println();
-		System.out.println(mergeRecursive(head1, head2).getData());
+		mergeRecursive(head1, head2).printLinkedList();
 	}
 
 	// 13. Print list in reverse
@@ -533,10 +531,10 @@ public class LinkedListMain {
 
 	// 13. Merge recursive
 	public ListNode mergeRecursive(ListNode head1, ListNode head2) {
-		if (head1 == null || head1.getNext() == null) {
+		if (head1 == null) {
 			return head2;
 		}
-		if (head2 == null || head2.getNext() == null) {
+		if (head2 == null) {
 			return head1;
 		}
 		ListNode sentinel = null;
@@ -793,7 +791,7 @@ public class LinkedListMain {
 		ListNode slow = head;
 		ListNode fast = head;
 
-		// move the fast by k+1 elements so that slow is before the 1st element
+		// move the fast by k elements so that slow is before the 1st element
 		// after the rotated list
 		for (var i = 0; i < k && fast != null; i++) {
 			fast = fast.getNext();
@@ -878,6 +876,7 @@ public class LinkedListMain {
 			return head;
 		}
 		final Set<Integer> set = new HashSet<>();
+		set.add(head.getData());
 		ListNode current = head;
 		while (current.getNext() != null) {
 			final ListNode next = current.getNext();

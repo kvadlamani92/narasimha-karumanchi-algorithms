@@ -19,7 +19,8 @@ public class StackMain {
 		// stackMain.runEvaluatePrefixExpression();
 		// stackMain.runFindSpansOfArray();
 		// stackMain.runMaxAreaInAHIstogram();
-		stackMain.runSortStack();
+		// stackMain.runSortStack();
+		stackMain.runNextGreaterElement();
 	}
 
 	// ....Stack Runners....
@@ -83,6 +84,12 @@ public class StackMain {
 	public void runSortStack() {
 		final int[] arr = { 3, 2, 5, 6, 1, 4, 4 };
 		System.out.println(Arrays.toString(sortStack(arr)));
+	}
+
+	// 11. Next greater element in a array
+	public void runNextGreaterElement() {
+		final int[] arr = { 3, 2, 5, 6, 1, 4, 5 };
+		System.out.println(Arrays.toString(nextGreaterElement(arr)));
 	}
 
 	// ....Algorithms....
@@ -448,4 +455,22 @@ public class StackMain {
 		return resultArray;
 	}
 
+	// 11. Next greater element
+	// Time - O(n), space - O(n)
+	// https://leetcode.com/problems/next-greater-element-i/discuss/97595/Java-10-lines-linear-time-complexity-O(n)-with-explanation
+	public int[] nextGreaterElement(int[] arr) {
+		final int n = arr.length;
+		final Stack<Integer> stack = new Stack<>();
+		final Map<Integer, Integer> map = new HashMap<>();
+		for (int i = 0; i < n; i++) {
+			while (!stack.empty() && arr[stack.peek()] < arr[i]) {
+				map.put(stack.pop(), arr[i]);
+			}
+			stack.push(i);
+		}
+		for (int i = 0; i < n; i++) {
+			arr[i] = map.getOrDefault(i, -1);
+		}
+		return arr;
+	}
 }

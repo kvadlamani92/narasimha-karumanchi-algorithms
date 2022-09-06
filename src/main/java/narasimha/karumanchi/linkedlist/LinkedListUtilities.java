@@ -89,9 +89,9 @@ public class LinkedListUtilities {
 	}
 
 	public static ListNode createLinkedListWithDuplicates() {
-		final var head = new ListNode(1);
+		final var head = new ListNode(2);
 		var listNode = head;
-		listNode.setNext(new ListNode(2));
+		listNode.setNext(new ListNode(1));
 		listNode = listNode.getNext();
 		listNode.setNext(new ListNode(2));
 		listNode = listNode.getNext();

@@ -2,6 +2,8 @@ package narasimha.karumanchi.order.statistics;
 
 import java.util.Arrays;
 import java.util.Map;
+import java.util.PriorityQueue;
+import java.util.Queue;
 import java.util.Random;
 import java.util.TreeMap;
 
@@ -18,7 +20,17 @@ public class OrderStatisticsMain {
 		// orderStatisticsMain.runKthSmallestTreeMap();
 		// orderStatisticsMain.runKthSmallestMedianOfMedians();
 		// orderStatisticsMain.runKthLargestMedianOfMedians();
-		orderStatisticsMain.runMedianOfSortedArrays();
+		// orderStatisticsMain.runMedianOfSortedArrays();
+		orderStatisticsMain.test();
+	}
+
+	public void test() {
+		final int[] arr = { 1, 2, 3, 4, 5 };
+		final Queue<Integer> minHeap = new PriorityQueue<>();
+		for (final int element : arr) {
+			minHeap.add(element);
+		}
+		System.out.println(minHeap.peek());
 	}
 
 	// Runners

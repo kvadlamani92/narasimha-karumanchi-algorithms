@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Deque;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
@@ -12,12 +13,13 @@ import java.util.Queue;
 public class ArraysMain {
 	public static void main(String[] args) {
 		final var arraysMain = new ArraysMain();
-		arraysMain.runRemoveAdjacentDuplicatesRecursively();
+		// arraysMain.runRemoveAdjacentDuplicatesRecursively();
 		// arraysMain.runMaxSumInSlidingWindow();
 		// arraysMain.runIntersectionOfPairs();
-		// arraysMain.runIntersectionOfPairLists();
+		arraysMain.runIntersectionOfPairLists();
 		// arraysMain.runMergeKSortedArrays();
-		arraysMain.runSquaresOfSortedArray();
+		// arraysMain.runSquaresOfSortedArray();
+		// arraysMain.runSubArraySum();
 	}
 
 	// ....Arrays Runners....
@@ -64,6 +66,16 @@ public class ArraysMain {
 	public void runSquaresOfSortedArray() {
 		final int[] arr = { -6, -4, 1, 2, 3, 5 };
 		System.out.println(Arrays.toString(squaresOfSortedArray(arr)));
+	}
+
+	// 7. Subarray sum
+	public void runSubArraySum() {
+		final int[] arr = { 142, 112, 54, 69, 148, 45, 63, 158, 38, 60, 124, 142, 130, 179, 117, 36, 191, 43, 89, 107,
+				41, 143, 65, 49, 47, 6, 91, 130, 171, 151, 7, 102, 194, 149, 30, 24, 85, 155, 157, 41, 167, 177, 132,
+				109, 145, 40, 27, 124, 138, 139, 119, 83, 130, 142, 34, 116, 40, 59, 105, 131, 178, 107, 74, 187, 22,
+				146, 125, 73, 71, 30, 178, 174, 98, 113 };
+		final List<Integer> result = subArraySum(arr, 665);
+		System.out.println(result);
 	}
 
 	// ....Algorithms....
@@ -226,6 +238,129 @@ public class ArraysMain {
 		}
 		return result;
 	}
+
+	// 7. Subarray Sum
+	public List<Integer> subArraySum(int[] arr, int k) {
+		final var n = arr.length;
+		var windowStart = 0;
+		var sum = 0;
+		final List<Integer> result = new ArrayList<>();
+		if (n == 0 || (k == 0 && arr[0] != 0)) {
+			result.add(-1);
+			return result;
+		}
+		for (var windowEnd = 0; windowEnd <= n; windowEnd++) {
+			System.out.println("windowStart: " + windowStart + " windowEnd: " + windowEnd + " sum: " + sum);
+			while (sum > k && windowStart < n) {
+				sum -= arr[windowStart];
+				windowStart++;
+			}
+			if (sum == k) {
+				result.add(windowStart + 1);
+				result.add(windowEnd);
+				return result;
+			}
+			if (windowEnd < n) {
+				sum += arr[windowEnd];
+			}
+		}
+		if (result.isEmpty()) {
+			result.add(-1);
+		}
+		return result;
+	}
+
+	// 8. Count of Smaller Numbers After Self
+	// https://leetcode.com/problems/count-of-smaller-numbers-after-self/
+	/*
+	 * Given an integer array nums, return an integer array counts where
+	 * counts[i] is the number of smaller elements to the right of nums[i].
+	 */
+	// Time - O(nlogn), Space - O(n)
+	public List<Integer> countSmaller(int[] arr) {
+		final int n = arr.length;
+		final ArrayValueWithIndex[] nums = new ArrayValueWithIndex[n];
+		for (int i = 0; i < n; i++) {
+			nums[i] = new ArrayValueWithIndex(arr[i], i);
+		}
+
+		final List<Integer> resultList = new ArrayList<>();
+		final int[] result = new int[n];
+		countSmaller(nums, 0, n - 1, result);
+		for (final int entry : result) {
+			resultList.add(entry);
+		}
+		return resultList;
+	}
+
+	private void countSmaller(ArrayValueWithIndex[] nums, int start, int end, int[] result) {
+		if (start >= end) {
+			return;
+		}
+		final int mid = start + (end - start) / 2;
+		countSmaller(nums, start, mid, result);
+		countSmaller(nums, mid + 1, end, result);
+		final List<ArrayValueWithIndex> merged = new LinkedList<>();
+		merge(nums, start, mid, end, result, merged);
+	}
+
+	private void merge(ArrayValueWithIndex[] nums, int start, int mid, int end, int[] result,
+			List<ArrayValueWithIndex> merged) {
+		if (start >= end) {
+			return;
+		}
+		int numberOfRightSmallerThanLeft = 0;
+		int i = start;
+		int j = mid + 1;
+
+		while (i <= mid && j <= end) {
+			if (nums[i].getValue() > nums[j].getValue()) {
+				numberOfRightSmallerThanLeft++;
+				merged.add(nums[j++]);
+			} else {
+				result[nums[i].getIndex()] += numberOfRightSmallerThanLeft;
+				merged.add(nums[i++]);
+			}
+		}
+		while (i <= mid) {
+			result[nums[i].getIndex()] += numberOfRightSmallerThanLeft;
+			merged.add(nums[i++]);
+		}
+		while (j <= end) {
+			merged.add(nums[j++]);
+		}
+
+		int k = start;
+		for (final ArrayValueWithIndex entry : merged) {
+			nums[k++] = entry;
+		}
+	}
+}
+
+class ArrayValueWithIndex {
+	int value;
+	int index;
+
+	public ArrayValueWithIndex(int value, int index) {
+		this.value = value;
+		this.index = index;
+	}
+
+	public void setValue(int value) {
+		this.value = value;
+	}
+
+	public int getValue() {
+		return this.value;
+	}
+
+	public void setIndex(int index) {
+		this.index = index;
+	}
+
+	public int getIndex() {
+		return this.index;
+	}
 }
 
 class ArrayIndexWithValueIndex implements Comparable {
@@ -268,57 +403,5 @@ class ArrayIndexWithValueIndex implements Comparable {
 	public int compareTo(Object o) {
 		final ArrayIndexWithValueIndex other = (ArrayIndexWithValueIndex) o;
 		return this.value > other.value ? 1 : (this.value < other.value ? -1 : 0);
-	}
-
-}
-
-class ArrayUtils {
-	public static List<Pair<Integer, Integer>> getListOfPairs() {
-		final Pair<Integer, Integer> a = new Pair(2, 6);
-		final Pair<Integer, Integer> b = new Pair(3, 7);
-		final Pair<Integer, Integer> c = new Pair(4, 5);
-		final List<Pair<Integer, Integer>> pairs = new ArrayList<>();
-		pairs.add(a);
-		pairs.add(b);
-		pairs.add(c);
-		return pairs;
-	}
-
-	public static List<Pair<Integer, Integer>> getListOfPairs2() {
-		final Pair<Integer, Integer> a = new Pair(1, 3);
-		final Pair<Integer, Integer> b = new Pair(5, 7);
-		final Pair<Integer, Integer> c = new Pair(9, 12);
-		final List<Pair<Integer, Integer>> pairs = new ArrayList<>();
-		pairs.add(a);
-		pairs.add(b);
-		pairs.add(c);
-		return pairs;
-	}
-
-	public static List<Pair<Integer, Integer>> getListOfPairs3() {
-		final Pair<Integer, Integer> a = new Pair(5, 10);
-		final List<Pair<Integer, Integer>> pairs = new ArrayList<>();
-		pairs.add(a);
-		return pairs;
-	}
-
-	public static List<Pair<Integer, Integer>> getListOfPairs4() {
-		final Pair<Integer, Integer> a = new Pair(1, 3);
-		final Pair<Integer, Integer> b = new Pair(5, 6);
-		final Pair<Integer, Integer> c = new Pair(7, 9);
-		final List<Pair<Integer, Integer>> pairs = new ArrayList<>();
-		pairs.add(a);
-		pairs.add(b);
-		pairs.add(c);
-		return pairs;
-	}
-
-	public static List<Pair<Integer, Integer>> getListOfPairs5() {
-		final Pair<Integer, Integer> a = new Pair(2, 3);
-		final Pair<Integer, Integer> b = new Pair(5, 7);
-		final List<Pair<Integer, Integer>> pairs = new ArrayList<>();
-		pairs.add(a);
-		pairs.add(b);
-		return pairs;
 	}
 }
