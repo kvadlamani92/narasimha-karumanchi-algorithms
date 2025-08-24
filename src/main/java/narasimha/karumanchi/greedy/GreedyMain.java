@@ -45,7 +45,7 @@ public class GreedyMain {
 	// 1. Huffman encoding
 
 	// 2. Interval scheduling
-	// Time - O(n), Space - O(1)
+	// Time - O(nlogn), Space - O(1)
 	public List<Pair<Integer, Integer>> findNonOverlappingIntervals(List<Pair<Integer, Integer>> intervals) {
 		final var n = intervals.size();
 		final List<Pair<Integer, Integer>> result = new ArrayList<>();
@@ -128,7 +128,7 @@ public class GreedyMain {
 		for (var i = 0; i < indexArray.length; i++) {
 			indexArray[i] = i;
 		}
-		System.out.println("indexArray:" + Arrays.toString(indexArray));
+		System.out.println("unsorted indexArray:" + Arrays.toString(indexArray));
 		// sort index array based on the indexes in b after it's sorted
 		Arrays.sort(indexArray, new Comparator<Integer>() {
 			@Override
@@ -136,10 +136,10 @@ public class GreedyMain {
 				return b[o1] < b[o2] ? -1 : (b[o1] > b[o2] ? 1 : 0);
 			}
 		});
-		System.out.println("indexArray:" + Arrays.toString(indexArray));
+		System.out.println("sorted indexArray baed on B:" + Arrays.toString(indexArray));
+		System.out.println("unsorted A:" + Arrays.toString(a));
+		System.out.println("unsorted B:" + Arrays.toString(b));
 		Arrays.sort(b);
-		System.out.println("b:" + Arrays.toString(b));
-		System.out.println("a:" + Arrays.toString(a));
 		// sort array A based on the index array (which inturn contains the
 		// index order after b is sorted). So A and B would both be sorted in
 		// the same way and would be in sync
@@ -149,7 +149,8 @@ public class GreedyMain {
 				return o1 - o2;
 			}
 		});
-		System.out.println("a:" + Arrays.toString(a));
+		System.out.println("sorted A:" + Arrays.toString(a));
+		System.out.println("sorted B:" + Arrays.toString(b));
 	}
 }
 

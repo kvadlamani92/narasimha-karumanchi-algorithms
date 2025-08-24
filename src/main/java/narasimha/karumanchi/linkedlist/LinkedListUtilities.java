@@ -157,7 +157,9 @@ public class LinkedListUtilities {
 		listNode = listNode.getNext();
 		listNode.setNext(new ListNode(12));
 		listNode = listNode.getNext();
-		listNode.setNext(new ListNode(12));
+		listNode.setNext(new ListNode(13));
+		listNode = listNode.getNext();
+		listNode.setNext(new ListNode(13));
 		listNode = listNode.getNext();
 		listNode.setNext(new ListNode(11));
 		listNode = listNode.getNext();

@@ -17,7 +17,7 @@ public class StackMain {
 		// stackMain.runEvaluatePostfixExpression();
 		// stackMain.runEvaluateInfixExpression();
 		// stackMain.runEvaluatePrefixExpression();
-		// stackMain.runFindSpansOfArray();
+		stackMain.runFindSpansOfArray();
 		// stackMain.runMaxAreaInAHIstogram();
 		// stackMain.runSortStack();
 		stackMain.runNextGreaterElement();
@@ -386,7 +386,7 @@ public class StackMain {
 
 	// 8. Finding of Spans: Given an array A and the span S[i] of A[i] is the
 	// maximum number of consecutive elements A[j] immediately preceding A[i]
-	// and such that A[j]<=A[j+1]
+	// and such that A[j]<=A[i]
 	// span[i] can be calculated if we know the closest day preceding to i that
 	// has the value greater than or equal to arr[i]. Let's call that index as
 	// P. Then span is defined as span[i] = i - P

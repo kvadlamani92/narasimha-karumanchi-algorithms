@@ -4,6 +4,7 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
@@ -16,10 +17,12 @@ public class ArraysMain {
 		// arraysMain.runRemoveAdjacentDuplicatesRecursively();
 		// arraysMain.runMaxSumInSlidingWindow();
 		// arraysMain.runIntersectionOfPairs();
-		arraysMain.runIntersectionOfPairLists();
+		// arraysMain.runIntersectionOfPairLists();
 		// arraysMain.runMergeKSortedArrays();
 		// arraysMain.runSquaresOfSortedArray();
 		// arraysMain.runSubArraySum();
+		// arraysMain.runCombinationSum();
+		arraysMain.runRemoveAdjacentDuplicatesRecursively();
 	}
 
 	// ....Arrays Runners....
@@ -76,6 +79,21 @@ public class ArraysMain {
 				146, 125, 73, 71, 30, 178, 174, 98, 113 };
 		final List<Integer> result = subArraySum(arr, 665);
 		System.out.println(result);
+	}
+
+	// 8. k closest points to origin
+	public void runKClosestPointsToOrigin() {
+		// TODO:
+	}
+
+	// 9. combination sum
+	public void runCombinationSum() {
+		final int[] arr = { 2, 3, 6, 7 };
+		final int k = 7;
+		final List<List<Integer>> result = combinationSum(arr, k);
+		for (final List<Integer> row : result) {
+			System.out.println(row);
+		}
 	}
 
 	// ....Algorithms....
@@ -333,6 +351,142 @@ public class ArraysMain {
 		int k = start;
 		for (final ArrayValueWithIndex entry : merged) {
 			nums[k++] = entry;
+		}
+	}
+
+	// 9. K closest points to origin
+	public int[][] kClosestPointsToOrigin(int[][] points, int k) {
+		// return kClosestPointsToOriginFullSort(points, k);
+		// return kClosestPointsToOriginMaxHeap(points, k);
+		return kClosestPointsToOriginRankBased(points, k);
+	}
+
+	private int[][] kClosestPointsToOriginFullSort(int[][] points, int k) {
+		Arrays.sort(points, new Comparator<int[]>() {
+			@Override
+			public int compare(int[] o1, int[] o2) {
+				final int distance1 = o1[0] * o1[0] + o1[1] * o1[1];
+				final int distance2 = o2[0] * o2[0] + o2[1] * o2[1];
+				return Integer.compare(distance1, distance2);
+			}
+		});
+		return Arrays.copyOfRange(points, 0, k);
+	}
+
+	private int[][] kClosestPointsToOriginMaxHeap(int[][] points, int k) {
+		final PriorityQueue<int[]> maxHeap = new PriorityQueue<>(new Comparator<int[]>() {
+			@Override
+			public int compare(int[] o1, int[] o2) {
+				final int distance1 = o1[0] * o1[0] + o1[1] * o1[1];
+				final int distance2 = o2[0] * o2[0] + o2[1] * o2[1];
+				return Integer.compare(distance2, distance1);
+			}
+		});
+		for (final int[] point : points) {
+			maxHeap.add(point);
+			if (maxHeap.size() > k) {
+				maxHeap.poll();
+			}
+		}
+		final int[][] result = new int[k][2];
+		while (k > 0) {
+			result[k - 1] = maxHeap.poll();
+			k--;
+		}
+		return result;
+	}
+
+	private int[][] kClosestPointsToOriginRankBased(int[][] points, int k) {
+		final int n = points.length;
+		int lo = 0;
+		int hi = n - 1;
+		while (lo <= hi) {
+			final int partitionIndex = partition(points, lo, hi);
+			if (partitionIndex == k) {
+				break;
+			} else if (partitionIndex < k) {
+				lo = partitionIndex + 1;
+			} else {
+				hi = partitionIndex - 1;
+			}
+		}
+		return Arrays.copyOfRange(points, 0, k);
+	}
+
+	private int partition(int[][] points, int lo, int hi) {
+		final int pivotIndex = lo;
+		final int[] pivot = points[lo];
+		int i = lo;
+		int j = hi;
+		while (i < j) {
+			while (i <= hi && compareBasedOnDistanceFromOrigin(points[i], pivot) <= 0) {
+				i++;
+			}
+			while (j >= lo && compareBasedOnDistanceFromOrigin(points[j], pivot) > 0) {
+				j--;
+			}
+			if (i < j) {
+				swap(points, i, j);
+			}
+		}
+		swap(points, j, pivotIndex);
+		return j;
+	}
+
+	private int compareBasedOnDistanceFromOrigin(int[] arr1, int[] arr2) {
+		final int x1 = arr1[0];
+		final int y1 = arr1[1];
+		final int x2 = arr2[0];
+		final int y2 = arr2[1];
+		return (x1 * x1 + y1 * y1 - x2 * x2 - y2 * y2);
+	}
+
+	private void swap(int[][] mat, int x, int y) {
+		final int[] temp = mat[x];
+		mat[x] = mat[y];
+		mat[y] = temp;
+	}
+
+	// 10. Combination sum
+	/*-
+	 * Given an array of distinct integers candidates and a target integer
+	 * target, return a list of all unique combinations of candidates where the
+	 * chosen numbers sum to target. You may return the combinations in any
+	 * order. The same number may be chosen from candidates an unlimited number
+	 * of times. Two combinations are unique if the frequency of at least one of
+	 * the chosen numbers is different.
+	 * 
+	 * Input: candidates = [2,3,6,7], target = 7, Output: [[2,2,3],[7]] 
+	 * Input: candidates = [2,3,5], target = 8, Output: [[2,2,2,2],[2,3,3],[3,5]]
+	 */
+	public List<List<Integer>> combinationSum(int[] arr, int k) {
+		final List<List<Integer>> result = new ArrayList<>();
+		final List<Integer> subList = new ArrayList<>();
+		final int[] sumArr = new int[1];
+		combinationSum(arr, k, 0, sumArr, subList, result);
+		return result;
+	}
+
+	private void combinationSum(int[] arr, int k, int index, int[] sumArr, List<Integer> subList,
+			List<List<Integer>> result) {
+		if (index >= arr.length) {
+			return;
+		}
+		for (int i = index; i < arr.length; i++) {
+			sumArr[0] += arr[i];
+			subList.add(arr[i]);
+			if (sumArr[0] == k) {
+				result.add(subList);
+				subList.clear();
+				sumArr[0] = 0;
+				return;
+			}
+			if (sumArr[0] > k) {
+				sumArr[0] -= arr[i];
+				subList.remove(Integer.valueOf(arr[i]));
+				combinationSum(arr, k, index + 1, sumArr, subList, result);
+			}
+			combinationSum(arr, k, index, sumArr, subList, result);
 		}
 	}
 }

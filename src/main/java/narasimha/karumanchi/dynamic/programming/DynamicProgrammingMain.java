@@ -198,11 +198,11 @@ import java.util.Queue;
  */
 public class DynamicProgrammingMain {
 	public static void main(String[] args) {
-		final var dpMain = new DynamicProgrammingMain();
+		final DynamicProgrammingMain dpMain = new DynamicProgrammingMain();
 		// dpMain.runComputeNthFibonaciiMemoized();
 		// dpMain.runComputeNthFibonaciiBottomUp();
 		// dpMain.runComputeNthFibonaciiThreeVariables();
-		// dpMain.runComputeNthFibonaciiMath();
+		dpMain.runComputeNthFibonaciiMath();
 		// dpMain.runShortestPathBinaryMatrix();
 		// dpMain.runHouseRobberAlternateHouses();
 		// dpMain.runLongestIncreasingSubsequence();
@@ -908,7 +908,7 @@ public class DynamicProgrammingMain {
 					dp[i][j] = 1 + dp[i + 1][j + 1];
 				} else {
 					// else return the max of length of LCS by deleting the 1st
-					// character from a amd b
+					// character from a and b
 					dp[i][j] = Math.max(dp[i + 1][j], dp[i][j + 1]);
 				}
 			}
@@ -987,7 +987,6 @@ public class DynamicProgrammingMain {
 					dp[j] = 0;
 				}
 				prev = temp; // prev stores dp[j-1] in the (i-1)th row
-
 			}
 		}
 		return maxSquareLength * maxSquareLength;

@@ -36,7 +36,7 @@ public class TreesMain {
 		// treesMain.runHeight();
 		// treesMain.runHeightWithStack();
 		// treesMain.runHeightWithLevelOrder();
-		treesMain.runMinDepth();
+		// treesMain.runMinDepth();
 		// treesMain.runMinDepthIterative();
 		// treesMain.runIsStructurallyIdentical();
 		// treesMain.runMaxDiameterInTree();
@@ -52,8 +52,8 @@ public class TreesMain {
 		// treesMain.runFindAncestors();
 		// treesMain.runLCA();
 		// treesMain.runZigZagTraversal();
-		// treesMain.runVerticalOrderTraversal();
-		treesMain.runNumberOfBinaryTreesWithNNodes();
+		treesMain.runVerticalOrderTraversal();
+		// treesMain.runNumberOfBinaryTreesWithNNodes();
 		// treesMain.runGenerateAllBinarySearchTrees();
 		// treesMain.runConstructTreeFromPreOrderString();
 	}
@@ -1274,15 +1274,8 @@ public class TreesMain {
 		}
 		verticalOrderTraversal(root.getLeft(), column - 1, map);
 		verticalOrderTraversal(root.getRight(), column + 1, map);
-		if (!map.containsKey(column)) {
-			final List<Integer> list = new ArrayList<>();
-			list.add(root.getData());
-			map.put(column, list);
-		} else {
-			final List<Integer> nodesInAColumn = map.get(column);
-			nodesInAColumn.add(root.getData());
-			map.put(column, nodesInAColumn);
-		}
+		map.putIfAbsent(column, new ArrayList<>());
+		map.get(column).add(root.getData());
 	}
 
 	// 42. *Number of binary trees with n nodes*

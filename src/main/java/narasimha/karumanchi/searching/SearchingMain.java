@@ -14,7 +14,7 @@ public class SearchingMain {
 		// searchingMain.runFindInterpolationSearch();
 		// searchingMain.runIsDuplicate();
 		// searchingMain.runIsDuplicateExistNRange();
-		// searchingMain.runFindMaxFrequencyElement();
+		searchingMain.runFindMaxFrequencyElement();
 		// searchingMain.runFindMaxFrequencyElementNRange();
 		// searchingMain.runFindMaxFrequencyElementNRangeInPlace();
 		// searchingMain.runFindFirstRepeatedElement();
@@ -42,9 +42,10 @@ public class SearchingMain {
 		// searchingMain.runFindRowWithMaxZeros();
 		// searchingMain.runSeparateEvenAndOddNumbers();
 		// searchingMain.runMoveZerosTillTheEnd();
-		searchingMain.runSortArrayWith012s();
+		// searchingMain.runSortArrayWith012s();
 		// searchingMain.runFindNumberOfTrailingZerosInNFactorial();
-		searchingMain.runFindPivotIndex();
+		searchingMain.runInterleaveString();
+		// searchingMain.runFindPivotIndex();
 	}
 
 	// Runners
@@ -280,6 +281,12 @@ public class SearchingMain {
 		System.out.println(findTrailingZeroCountInNFactorial(20));
 	}
 
+	// 36. Interleave String
+	public void runInterleaveString() {
+		final String str = "abcd1234";
+		System.out.println(interleaveString(str));
+	}
+
 	// 36. Find pivot index
 	public void runFindPivotIndex() {
 		final var arr = SearchingUtils.createArray();
@@ -375,12 +382,9 @@ public class SearchingMain {
 	public int findMaxFrequencyElement(int[] arr) {
 		final var n = arr.length;
 		final Map<Integer, Integer> map = new HashMap<>();
+
 		for (var i = 0; i < n; i++) {
-			if (!map.containsKey(arr[i])) {
-				map.put(arr[i], 1);
-			} else {
-				map.put(arr[i], map.get(arr[i]) + 1);
-			}
+			map.put(arr[i], map.getOrDefault(arr[i], 0) + 1);
 		}
 		var maxFrequencyElement = 0;
 		var maxFrequency = 0;
@@ -1101,6 +1105,30 @@ public class SearchingMain {
 	// 38. Transform a1a2a3a4..b1b2b3b4 into a1b1a2b2a3b3a4b4..
 	// Divide and conquer -> a1a2a3a4:b1b2b3b4 -> swap elements at the center
 	// a1a2b1b2:a3a4b3b4 -> a1a2:b1b2 -> a1b1:a2b2
+	public String interleaveString(String str) {
+		final int n = str.length();
+		if (n <= 1 || n % 2 != 0) {
+			return str;
+		}
+		final char[] arr = str.toCharArray();
+		interleaveString(arr, 0, str.length() - 1);
+		return new String(arr);
+	}
+
+	private void interleaveString(char[] arr, int start, int end) {
+		if (start < end) {
+			final int mid = start + (end - start) / 2;
+			final int leftMid = (start + mid) / 2;
+			int rightMid = mid + 1;
+			for (int i = leftMid + 1; i <= mid; i++) {
+				final char temp = arr[i];
+				arr[i] = arr[rightMid];
+				arr[rightMid++] = temp;
+			}
+			interleaveString(arr, start, mid);
+			interleaveString(arr, mid + 1, end);
+		}
+	}
 
 	// 39. Find pivot element -> sum of numbers to the left of this index is
 	// equal to the sum of numbers to the right
@@ -1143,7 +1171,7 @@ class SearchingUtils {
 	}
 
 	public static int[] createArrayWithDuplicatesNRange() {
-		final int[] arr = { 1, 4, 5, 6, 7, 8, 8, 2, 3 };
+		final int[] arr = { 1, 4, 5, 2, 3, 2, 2, 3 };
 		return arr;
 	}
 

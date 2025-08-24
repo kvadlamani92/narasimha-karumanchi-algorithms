@@ -17,7 +17,7 @@ public class LinkedListMain {
 		// linkedListMain.runFindPosition();
 		// linkedListMain.runClear();
 		// linkedListMain.runFindNthNodeFromTheEnd();
-		// linkedListMain.runIsCycleExists();
+		linkedListMain.runIsCycleExists();
 		// linkedListMain.runFindStartNodeOfLoop();
 		// linkedListMain.runRemoveLoop();
 		// linkedListMain.runFindLengthOfLoop();
@@ -41,7 +41,7 @@ public class LinkedListMain {
 		// linkedListMain.runPartition();
 		// linkedListMain.runRemoveDuplicates();
 		// linkedListMain.runCommonElements();
-		linkedListMain.runMergeKLists();
+		// linkedListMain.runMergeKLists();
 	}
 
 	// ....LinkedListADT Runners....
@@ -248,7 +248,7 @@ public class LinkedListMain {
 		// final ListNode head = LinkedListUtilities.createCircularList();
 		// final ListNode newHead = findJosepheusCircleNode(head, 2);
 		// newHead.printLinkedList();
-		System.out.println(josephus(3, 2));
+		System.out.println(josephus(12, 3));
 	}
 
 	// 18. Clone linked list with random pointers
@@ -604,15 +604,7 @@ public class LinkedListMain {
 			fast = fast.getNext().getNext();
 			slow = slow.getNext();
 		}
-		ListNode reversedSecondHalfHead = null;
-		if (fast.getNext() == null) { // if the list is odd - fast.next is null
-										// and slow.next points to the head of
-										// the 2nd half
-			reversedSecondHalfHead = reverseRecursive(slow.getNext());
-		} else { // if the list is even - fast.next.next is null and slow points
-					// to the head of the 2nd half
-			reversedSecondHalfHead = reverseRecursive(slow);
-		}
+		final ListNode reversedSecondHalfHead = reverseRecursive(slow.getNext());
 		ListNode head1 = head;
 		ListNode head2 = reversedSecondHalfHead;
 		while (head1 != null && head2 != null) { // this will work for the case
@@ -627,6 +619,7 @@ public class LinkedListMain {
 													// compared
 			if (head1.getData() != head2.getData()) {
 				slow.setNext(reverseRecursive(reversedSecondHalfHead));
+				head.printLinkedList();
 				return false;
 			}
 			head1 = head1.getNext();
@@ -720,36 +713,60 @@ public class LinkedListMain {
 	}
 
 	// 19. Clone a linked list with random pointer
+	// public LinkedListRandom clone(LinkedListRandom head) {
+	// if (head == null) {
+	// return head;
+	// }
+	// final Map<LinkedListRandom, LinkedListRandom> map = new HashMap<>();
+	//
+	// LinkedListRandom head1 = head;
+	// final var clonedHead = new LinkedListRandom(head.getData());
+	// LinkedListRandom head2 = clonedHead;
+	// map.put(head1, head2);
+	//
+	// while (head1 != null) {
+	// head1 = head1.getNext();
+	// if (head1 == null) {
+	// break;
+	// }
+	// final var head2Next = new LinkedListRandom(head1.getData());
+	// head2.setNext(head2Next);
+	// head2 = head2.getNext();
+	// map.put(head1, head2);
+	// }
+	//
+	// head1 = head;
+	// head2 = clonedHead;
+	// while (head1 != null && head2 != null) {
+	// head2.setRandom(map.get(head1.getRandom()));
+	// head1 = head1.getNext();
+	// head2 = head2.getNext();
+	// }
+	// return clonedHead;
+	// }
 	public LinkedListRandom clone(LinkedListRandom head) {
-		if (head == null) {
+		if (head == null || head.getNext() == null) {
 			return head;
 		}
+		LinkedListRandom headIterator = head;
+		final LinkedListRandom head2 = new LinkedListRandom(-1);
+		LinkedListRandom head2Iterator = head2;
 		final Map<LinkedListRandom, LinkedListRandom> map = new HashMap<>();
-
-		LinkedListRandom head1 = head;
-		final var clonedHead = new LinkedListRandom(head.getData());
-		LinkedListRandom head2 = clonedHead;
-		map.put(head1, head2);
-
-		while (head1 != null) {
-			head1 = head1.getNext();
-			if (head1 == null) {
-				break;
-			}
-			final var head2Next = new LinkedListRandom(head1.getData());
-			head2.setNext(head2Next);
-			head2 = head2.getNext();
-			map.put(head1, head2);
+		while (headIterator != null) {
+			final int data = headIterator.getData();
+			head2Iterator.setNext(new LinkedListRandom(data));
+			map.put(headIterator, head2Iterator.getNext());
+			headIterator = headIterator.getNext();
+			head2Iterator = head2Iterator.getNext();
 		}
-
-		head1 = head;
-		head2 = clonedHead;
-		while (head1 != null && head2 != null) {
-			head2.setRandom(map.get(head1.getRandom()));
-			head1 = head1.getNext();
-			head2 = head2.getNext();
+		headIterator = head;
+		head2Iterator = head2.getNext();
+		while (headIterator != null && head2Iterator != null) {
+			head2Iterator.setRandom(map.get(headIterator.getRandom()));
+			headIterator = headIterator.getNext();
+			head2Iterator = head2Iterator.getNext();
 		}
-		return clonedHead;
+		return head2.getNext();
 	}
 
 	// 20. Alternate the elements in 2 linked lists
@@ -915,8 +932,8 @@ public class LinkedListMain {
 
 	// 26. Merge k sorted linked lists
 	public ListNode mergeKLists(List<ListNode> listOfLinkedLists) {
-		final ListNode sentinel = new ListNode(-1);
-		final Queue<ListNode> minHeap = new PriorityQueue<ListNode>();
+		final var sentinel = new ListNode(-1);
+		final Queue<ListNode> minHeap = new PriorityQueue<>();
 		for (final ListNode linkedListHead : listOfLinkedLists) {
 			minHeap.add(linkedListHead);
 		}

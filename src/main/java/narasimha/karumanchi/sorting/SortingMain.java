@@ -403,13 +403,14 @@ public class SortingMain {
 	private void radixCountSort(int[] arr, int exponent) {
 		final var n = arr.length;
 		// as a single digit number fits from [0..9]
-		final var countingArr = new int[10];
+		final var countArraySize = 10;
+		final var countingArr = new int[countArraySize];
 		for (var i = 0; i < n; i++) {
 			countingArr[(arr[i] / exponent) % 10]++;
 		}
 		// change countingArr[i] so that countingArr[i] now contains the actual
 		// position of number i in the output array
-		for (var i = 1; i < 10; i++) {
+		for (var i = 1; i < countArraySize; i++) {
 			countingArr[i] += countingArr[i - 1];
 		}
 		final var outputArr = new int[n];
